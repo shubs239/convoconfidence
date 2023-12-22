@@ -81,11 +81,24 @@ let remainingTime = 2;
 let activeScenario = null;
 let timer = null;
 let chatHistories = {};
+let loggedIn=false;
 
 
 function openScenarioModal(scenarioId) {
     if (activeScenario !== scenarioId) {
         // New scenario selected, reset timer and load new content
+        if (! loggedIn) {
+            document.getElementById('signup-form').style.display = 'none';
+        
+    // Optionally disable the message input and send button
+    document.getElementById('chat-input').disabled = false;
+    document.getElementById('send-message').disabled = false;
+        }
+        else if(loggedIn){
+            document.getElementById('chat-input').disabled = false;
+    document.getElementById('send-message').disabled = false;
+        }
+        
         resetTimer();
         updateModalContent(scenarioId);
         activeScenario = scenarioId;
@@ -153,6 +166,11 @@ document.getElementById('send-message').addEventListener('click', function() {
     //     document.getElementById('send-message').disabled = false;
     
     // }
+    if(loggedIn && timerStarted){
+        document.getElementById('chat-input').disabled = true;
+    document.getElementById('send-message').disabled = true;
+    }
+    
     document.getElementById('suggested-messages').style.display = 'none';
     
     const chatInput = document.getElementById('chat-input');
@@ -207,7 +225,14 @@ function startTimer(time) {
 
         if (--time < 0) {
             clearInterval(countdown);
-            new bootstrap.Modal(document.getElementById('signupLoginModal')).show();
+            if (!loggedIn) {
+                document.getElementById('signup-form').style.display = 'block';
+    // Optionally disable the message input and send button
+            document.getElementById('chat-input').disabled = true;
+            document.getElementById('send-message').disabled = true;
+            }
+            
+            
             // Handle what happens when the timer reaches 0
         }
     }, 1000);
@@ -304,6 +329,14 @@ function useSuggestedMessage(message) {
 document.getElementById('submit-auth').addEventListener('click', function() {
     // Handle the sign-up/login process here
     console.log('Sign-up/login button clicked');
+
+    document.getElementById('signup-form').style.display = 'none';
+    document.getElementById('chat-input').disabled = false;
+    document.getElementById('send-message').disabled = false;
+    loggedIn = true;
+    // Restart the timer for another 5 minutes
+    startTimer(300);
+    document.getElementById("signup-navbar").innerHTML = document.getElementById("floatingInput").value;
     // On successful sign-up/login, close the current modal and restart the chat timer
     // Example: 
      //new bootstrap.Modal(document.getElementById('signupLoginModal')).hide();
