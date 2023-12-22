@@ -1,3 +1,5 @@
+
+
 const scenarios = [
     {
         "id": "coffeeShop",
@@ -75,7 +77,7 @@ const scenarios = [
 let timerStarted = false;
 let countdown;
 let timerPaused= false;
-let remainingTime = 300;
+let remainingTime = 2;
 let activeScenario = null;
 let timer = null;
 let chatHistories = {};
@@ -132,6 +134,7 @@ document.querySelectorAll('.start-chatting').forEach(button => {
     document.querySelector("p.scenario-details").innerHTML = scenarioId.description
     populateSuggestions(scenario)
     //console.log(scenario)
+    
     document.getElementById('chat-area').innerHTML = ''; 
     //modalBody.innerHTML = '<p>Chat content for ' + scenario + ' will go here...</p>';
     // Update other parts of the modal as needed
@@ -148,7 +151,8 @@ document.getElementById('send-message').addEventListener('click', function() {
     
     const chatInput = document.getElementById('chat-input');
     const message = chatInput.value.trim();
-    console.log(timerPaused,"send wala")
+    //remainingTime=30
+    console.log(remainingTime)
     
     if (message !== "") {
         // Add user message
@@ -181,6 +185,7 @@ function pauseTimer() {
 }
 function startTimer(time) {
     remainingTime = time;
+    console.log(remainingTime)
     clearInterval(countdown); // Clear any existing timer
 
     countdown = setInterval(function () {
@@ -203,7 +208,7 @@ function startTimer(time) {
 
 function resetTimer() {
     clearInterval(timer);
-    remainingTime = 300; // Reset to 5 minutes
+    remainingTime = 2; // Reset to 5 minutes
     timerPaused = false;
     // Reset timer display to 05:00
     document.getElementById('timer').textContent = "05:00";
@@ -283,17 +288,22 @@ function useSuggestedMessage(message) {
     chatInput.value = message;
     // Simulate a message send click
     document.getElementById('send-message').click();
-    startTimer(300)
+    startTimer(remainingTime)
     // Hide the suggested messages
    
     
 }
   
-document.getElementById('signupLoginButton').addEventListener('click', function() {
+document.getElementById('submit-auth').addEventListener('click', function() {
     // Handle the sign-up/login process here
     console.log('Sign-up/login button clicked');
     // On successful sign-up/login, close the current modal and restart the chat timer
     // Example: 
-    // new bootstrap.Modal(document.getElementById('signupLoginModal')).hide();
-    // startTimer(5); // Restart the timer for another 5 minutes
+     //new bootstrap.Modal(document.getElementById('signupLoginModal')).hide();
+    //  const signupLoginModal = new bootstrap.Modal(document.getElementById('signupLoginModal'));
+
+    //  // Hide the modal
+    //  signupLoginModal.hide();
+     //console.log(new bootstrap.Modal(signupLoginModal))
+    //startTimer(remainingTime+30); // Restart the timer for another 5 minutes
 });
