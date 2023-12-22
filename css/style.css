@@ -1,0 +1,89 @@
+.chat-area {
+    height: auto; /* Adjust height as needed */
+    overflow-y: auto; /* Enable scrolling for overflow */
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 10px;
+ /* Light grey background */
+}
+
+.chat-input-area {
+    display: flex;
+}
+.message {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.message-img {
+    width: 40px; /* Adjust size as needed */
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.coffee-scenario{
+    padding: 5px;
+    text-align: center;
+}
+.ai-message .message-text {
+    background-color: #e0e0e0; /* Light gray for AI messages */
+    color: black;
+    border-radius: 20px;
+    padding: 10px;
+    max-width: 70%;
+}
+.ai-message {
+    display: flex;
+    justify-content: flex-start; /* Aligns AI message to the left */
+}
+.timer {
+    font-size: 24px; /* Large font size for the timer */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.scenario-name{
+    text-align: center;
+    margin: 1.5rem;
+}
+
+.user-message {
+    margin-left: auto;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.user-message .message-text {
+    background-color: #4CAF50; /* Green for user messages */
+    color: white;
+    border-radius: 20px;
+    padding: 10px;
+    max-width: 70%;
+}
+#chat-input {
+    flex-grow: 1; /* Input field takes up available space */
+    margin-right: 10px; /* Spacing between input field and button */
+}
+
+.suggested-messages {
+    background-color: #f7f7f7;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.suggested-messages ul {
+    list-style: none;
+    padding: 0;
+}
+
+.suggested-messages ul li {
+    cursor: pointer;
+    color: #007bff;
+}
+
+.img-paid{
+    opacity: 0.6;
+}
