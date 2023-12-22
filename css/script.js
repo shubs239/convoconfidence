@@ -147,12 +147,12 @@ document.querySelectorAll('.start-chatting').forEach(button => {
 //Add comments here
 
 document.getElementById('send-message').addEventListener('click', function() {
-    if (remainingTime<=0) {
-        document.getElementById('send-message').disabled = true;
-    }else{
-        document.getElementById('send-message').disabled = false;
+    // if (remainingTime<=0) {
+    //     document.getElementById('send-message').disabled = true;
+    // }else{
+    //     document.getElementById('send-message').disabled = false;
     
-    }
+    // }
     document.getElementById('suggested-messages').style.display = 'none';
     
     const chatInput = document.getElementById('chat-input');
