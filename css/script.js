@@ -167,8 +167,8 @@ document.getElementById('send-message').addEventListener('click', function() {
     
     // }
     if(loggedIn && timerStarted){
-        document.getElementById('chat-input').disabled = true;
-    document.getElementById('send-message').disabled = true;
+        document.getElementById('chat-input').disabled = false;
+    document.getElementById('send-message').disabled = false;
     }
     
     document.getElementById('suggested-messages').style.display = 'none';
