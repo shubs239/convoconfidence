@@ -200,7 +200,13 @@ document.getElementById('send-message').addEventListener('click', function() {
         // For demonstration, let's simulate an AI response
         // In a real application, this would be handled by your backend
         setTimeout(() => {
-            addAiMessage("This is a response from AI.");
+            const chatHistory = getChatHistory();
+            chatHistory.push({ role: 'user', content: message });
+            //addAiMessage("This is a response from AI.");
+            callBackendApi(message, chatHistory).then(aiMessage => {
+                addAiMessage(aiMessage);
+                console.log(chatHistory)
+            });
         }, 1000); // Simulated delay
     }
 });
@@ -261,6 +267,9 @@ function addUserMessage(message) {
     messageDiv.appendChild(messageTextDiv);
     chatArea.appendChild(messageDiv);
     chatArea.scrollTop = chatArea.scrollHeight;
+    
+    
+
     
 }
 
@@ -347,3 +356,42 @@ document.getElementById('submit-auth').addEventListener('click', function() {
      //console.log(new bootstrap.Modal(signupLoginModal))
     //startTimer(remainingTime+30); // Restart the timer for another 5 minutes
 });
+async function callBackendApi(userInput, chatHistory) {
+    try {
+        const response = await fetch('http://localhost:7071/api/convoConfidenceMessage', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Credentials': 'true'
+            },
+            body: JSON.stringify({
+                user_input: userInput,
+                chat_history: chatHistory
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data.reply;
+    } catch (error) {
+        console.error('Error:', error);
+        return "Sorry, something went wrong. Please try again.";
+    }
+}
+
+function getChatHistory() {
+    const chatArea = document.getElementById('chat-area');
+    const messages = chatArea.getElementsByClassName('message');
+    const chatHistory = [];
+
+    for (let message of messages) {
+        const messageText = message.getElementsByClassName('message-text')[0].textContent;
+        const role = message.classList.contains('user-message') ? 'user' : 'assistant';
+        chatHistory.push({ role, content: messageText });
+    }
+
+    return chatHistory;
+}
