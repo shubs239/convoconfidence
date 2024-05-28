@@ -335,28 +335,28 @@ function useSuggestedMessage(message) {
     
 }
   
-document.getElementById('submit-auth').addEventListener('click', function() {
-    // Handle the sign-up/login process here
-    console.log('Sign-up/login button clicked');
+// document.getElementById('submit-auth').addEventListener('click', function() {
+//     // Handle the sign-up/login process here
+//     console.log('Sign-up/login button clicked');
     
 
-    document.getElementById('signup-form').style.display = 'none';
-    document.getElementById('chat-input').disabled = false;
-    document.getElementById('send-message').disabled = false;
-    loggedIn = true;
-    // Restart the timer for another 5 minutes
-    startTimer(300);
-    document.getElementById("signup-navbar").innerHTML = document.getElementById("floatingInput").value;
-    // On successful sign-up/login, close the current modal and restart the chat timer
-    // Example: 
-     //new bootstrap.Modal(document.getElementById('signupLoginModal')).hide();
-    //  const signupLoginModal = new bootstrap.Modal(document.getElementById('signupLoginModal'));
+//     document.getElementById('signup-form').style.display = 'none';
+//     document.getElementById('chat-input').disabled = false;
+//     document.getElementById('send-message').disabled = false;
+//     loggedIn = true;
+//     // Restart the timer for another 5 minutes
+//     startTimer(300);
+//     document.getElementById("signup-navbar").innerHTML = document.getElementById("floatingInput").value;
+//     // On successful sign-up/login, close the current modal and restart the chat timer
+//     // Example: 
+//      //new bootstrap.Modal(document.getElementById('signupLoginModal')).hide();
+//     //  const signupLoginModal = new bootstrap.Modal(document.getElementById('signupLoginModal'));
 
-    //  // Hide the modal
-    //  signupLoginModal.hide();
-     //console.log(new bootstrap.Modal(signupLoginModal))
-    //startTimer(remainingTime+30); // Restart the timer for another 5 minutes
-});
+//     //  // Hide the modal
+//     //  signupLoginModal.hide();
+//      //console.log(new bootstrap.Modal(signupLoginModal))
+//     //startTimer(remainingTime+30); // Restart the timer for another 5 minutes
+// });
 async function callBackendApi(userInput, chatHistory) {
     try {
         const response = await fetch('http://localhost:7071/api/convoConfidenceMessage', {
@@ -402,15 +402,18 @@ auth0.createAuth0Client({
     domain: "dev-06vpf2i8o7qo8p2r.us.auth0.com",
     clientId: "ef2jEI8EaScAS34hBvymnG9Kii15YA5Y",
     authorizationParams: {
-        redirect_uri: window.location.origin
+        redirect_uri: "https://delightful-sea-0e05d0100.5.azurestaticapps.net/"
     }
     }).then(async (auth0Client) => {
     // Assumes a button with id "login" in the DOM
     const loginButton = document.getElementById("submit-auth");
     
+    
     loginButton.addEventListener("click", (e) => {
+        console.log(loginButton,"khvdgwev")
         e.preventDefault();
         auth0Client.loginWithRedirect();
+
     });
     
     if (location.search.includes("state=") && 
