@@ -13,6 +13,7 @@ def convoConfidenceMessage(req: func.HttpRequest) -> func.HttpResponse:
         req_body = req.get_json()
         user_input = req_body.get('user_input')
         chat_history = req_body.get('chat_history')
+        #scenario = req_body.get("scenario")
         print(user_input)
     except ValueError as e:
         logging.error(f'Error parsing request body: {e}')
@@ -23,26 +24,26 @@ def convoConfidenceMessage(req: func.HttpRequest) -> func.HttpResponse:
         )
 
     if user_input and chat_history is not None:
-        deepinfra_api_key = "ETeOZ2RdgtRvZxdzRL1CTdqkzJL8IYj4"
-        openai = OpenAI(
-            api_key=deepinfra_api_key,
-            base_url="https://api.deepinfra.com/v1/openai",
-        )
+        # deepinfra_api_key = "ETeOZ2RdgtRvZxdzRL1CTdqkzJL8IYj4"
+        # openai = OpenAI(
+        #     api_key=deepinfra_api_key,
+        #     base_url="https://api.deepinfra.com/v1/openai",
+        # )
         
         messages = chat_history + [{"role":"system", "content":"You are Pooja, drinking coffee while reading a book"},{"role": "user", "content": user_input}]
         
         try:
-            chat_completion = openai.chat.completions.create(
-                model="meta-llama/Meta-Llama-3-8B-Instruct",
-                messages=messages,
-                max_tokens=50
-            )
+            # chat_completion = openai.chat.completions.create(
+            #     model="meta-llama/Meta-Llama-3-8B-Instruct",
+            #     messages=messages,
+            #     max_tokens=50
+            # )
             #reply = chat_completion.choices[0].message.content
             response_data = {
                 "reply": "reply",
                 "usage": {
-                    "prompt_tokens": chat_completion.usage.prompt_tokens,
-                    "completion_tokens": chat_completion.usage.completion_tokens
+                    "prompt_tokens": 10,#chat_completion.usage.prompt_tokens,
+                    "completion_tokens": 10#chat_completion.usage.completion_tokens
                 }
             }
             return func.HttpResponse(json.dumps(response_data), status_code=200, mimetype="application/json")

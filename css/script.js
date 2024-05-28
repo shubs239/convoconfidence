@@ -164,7 +164,7 @@ document.getElementById('send-message').addEventListener('click', function() {
     //     document.getElementById('send-message').disabled = true;
     // }else{
     //     document.getElementById('send-message').disabled = false;
-    
+    //const scenario = this.getAttribute('data-scenario');
     // }
     if(loggedIn && timerStarted){
         document.getElementById('chat-input').disabled = false;
@@ -205,7 +205,7 @@ document.getElementById('send-message').addEventListener('click', function() {
             //addAiMessage("This is a response from AI.");
             callBackendApi(message, chatHistory).then(aiMessage => {
                 addAiMessage(aiMessage);
-                console.log(chatHistory)
+                //console.log(scenario)
             });
         }, 1000); // Simulated delay
     }
@@ -338,6 +338,7 @@ function useSuggestedMessage(message) {
 document.getElementById('submit-auth').addEventListener('click', function() {
     // Handle the sign-up/login process here
     console.log('Sign-up/login button clicked');
+    
 
     document.getElementById('signup-form').style.display = 'none';
     document.getElementById('chat-input').disabled = false;
@@ -366,7 +367,8 @@ async function callBackendApi(userInput, chatHistory) {
             },
             body: JSON.stringify({
                 user_input: userInput,
-                chat_history: chatHistory
+                chat_history: chatHistory,
+                //scenario: scenario
             })
         });
 
@@ -395,3 +397,50 @@ function getChatHistory() {
 
     return chatHistory;
 }
+
+auth0.createAuth0Client({
+    domain: "dev-06vpf2i8o7qo8p2r.us.auth0.com",
+    clientId: "ef2jEI8EaScAS34hBvymnG9Kii15YA5Y",
+    authorizationParams: {
+        redirect_uri: window.location.origin
+    }
+    }).then(async (auth0Client) => {
+    // Assumes a button with id "login" in the DOM
+    const loginButton = document.getElementById("submit-auth");
+    
+    loginButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        auth0Client.loginWithRedirect();
+    });
+    
+    if (location.search.includes("state=") && 
+        (location.search.includes("code=") || 
+        location.search.includes("error="))) {
+        await auth0Client.handleRedirectCallback();
+        window.history.replaceState({}, document.title, "/");
+    }
+    
+    // Assumes a button with id "logout" in the DOM
+    const logoutButton = document.getElementById("logout");
+    
+    logoutButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        auth0Client.logout();
+    });
+    
+    const isAuthenticated = await auth0Client.isAuthenticated();
+    const userProfile = await auth0Client.getUser();
+    
+    // Assumes an element with id "profile" in the DOM
+    const profileElement = document.getElementById("profile");
+    
+    if (isAuthenticated) {
+        profileElement.style.display = "block";
+        profileElement.innerHTML = `
+                <p>${userProfile.name}</p>
+                <img src="${userProfile.picture}" />
+            `;
+    } else {
+        profileElement.style.display = "none";
+    }
+    });
