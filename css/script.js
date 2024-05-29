@@ -398,52 +398,76 @@ function getChatHistory() {
     return chatHistory;
 }
 
-auth0.createAuth0Client({
-    domain: "dev-06vpf2i8o7qo8p2r.us.auth0.com",
-    clientId: "ef2jEI8EaScAS34hBvymnG9Kii15YA5Y",
-    authorizationParams: {
-        redirect_uri: "https://delightful-sea-0e05d0100.5.azurestaticapps.net/"
-    }
-    }).then(async (auth0Client) => {
-    // Assumes a button with id "login" in the DOM
-    const loginButton = document.getElementById("submit-auth");
-    
-    
-    loginButton.addEventListener("click", (e) => {
-        console.log(loginButton,"khvdgwev")
-        e.preventDefault();
-        auth0Client.loginWithRedirect();
-
+document.addEventListener("DOMContentLoaded", async () => {
+    const auth0Client = await auth0.createAuth0Client({
+        domain: "dev-06vpf2i8o7qo8p2r.us.auth0.com",
+        clientId: "ef2jEI8EaScAS34hBvymnG9Kii15YA5Y",
+        authorizationParams: {
+            redirect_uri: "http://localhost:8000"// Use your application's URL here
+        }
     });
-    
-    if (location.search.includes("state=") && 
-        (location.search.includes("code=") || 
-        location.search.includes("error="))) {
+
+       // Function to handle authentication callback
+    async function handleAuthCallback() {
+    if (location.search.includes("state=") && (location.search.includes("code=") || location.search.includes("error="))) {
         await auth0Client.handleRedirectCallback();
         window.history.replaceState({}, document.title, "/");
     }
-    
-    // Assumes a button with id "logout" in the DOM
+}
+
+    // Call the function to handle the callback
+    await handleAuthCallback();
+
+
+    // Handle the authentication state
+    const loginButton = document.getElementById("submit-auth");
+    const loginButtonNavbar = document.getElementById("signup-navbar")
+
+    loginButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        auth0Client.loginWithRedirect();
+    });
+   
+    loginButtonNavbar.addEventListener("click", (e) => {
+        e.preventDefault();
+        auth0Client.loginWithRedirect();
+    });
+    // if (window.location.search.includes("state=") &&
+    //     (window.location.search.includes("code=") ||
+    //      window.location.search.includes("error="))) {
+    //     await auth0Client.handleRedirectCallback();
+    //     window.history.replaceState({}, document.title, window.location.pathname);
+    // }
+
     const logoutButton = document.getElementById("logout");
-    
     logoutButton.addEventListener("click", (e) => {
         e.preventDefault();
-        auth0Client.logout();
+        auth0Client.logout({ returnTo: "http://localhost:8000" });
     });
-    
+
     const isAuthenticated = await auth0Client.isAuthenticated();
-    const userProfile = await auth0Client.getUser();
-    
-    // Assumes an element with id "profile" in the DOM
+    //const userProfile = await auth0Client.getUser();
+
     const profileElement = document.getElementById("profile");
-    
+    console.log(isAuthenticated)
     if (isAuthenticated) {
+        const userProfile = await auth0Client.getUser();
         profileElement.style.display = "block";
-        profileElement.innerHTML = `
-                <p>${userProfile.name}</p>
-                <img src="${userProfile.picture}" />
-            `;
+        // profileElement.innerHTML = `
+           
+        //     <img src="${userProfile.picture}" alt="Profile Picture"/>
+        // `;
+        logoutButton.style.display = "block";
+        
+        // Update the navbar with the user's name
+        signupNavbar = document.getElementById("signup-navbar")
+        console.log(signupNavbar)
+        signupNavbar.textContent = userProfile.name;
     } else {
         profileElement.style.display = "none";
+        logoutButton.style.display = "none";
+        
+        // Ensure the default text is shown if the user is not authenticated
+        signupNavbar.textContent = "Sign Up/Login";
     }
-    });
+});
