@@ -4,18 +4,19 @@
     border: 1px solid #ccc;
     margin-bottom: 10px;
     padding: 10px;
- /* Light grey background */
-}
+    background-color: #f5f5f5; /* Light grey background */
+}   
 
 .chat-input-area {
     display: flex;
+    margin-top: 10px;
 }
+
 .message {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
 }
-
 .message-img {
     width: 40px; /* Adjust size as needed */
     height: 40px;
@@ -33,6 +34,7 @@
     padding: 10px;
     max-width: 70%;
 }
+
 .ai-message {
     display: flex;
     justify-content: flex-start; /* Aligns AI message to the left */
@@ -86,4 +88,66 @@
 
 .img-paid{
     opacity: 0.6;
+}
+body {
+    background-color: #000000;
+    font-family: 'Roboto', sans-serif;
+    color: #333333;
+}
+.navbar {
+    background-color: #005f73;
+    color: white;
+}
+.navbar .navbar-brand {
+    color: rgb(0, 0, 0);
+    font-family: 'Montserrat', sans-serif;
+}
+.navbar .nav-link {
+    color: rgb(2, 2, 2);
+}
+.navbar .nav-link:hover {
+    color: #94d2bd;
+}
+.navbar-toggler-icon {
+    color: white;
+}
+.card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    padding: 20px;
+}
+.card img {
+    border-radius: 10px 10px 0 0;
+}
+.card .btn-success {
+    background-color: #008080;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.card .btn-success:hover {
+    background-color: #005f73;
+}
+.icon {
+    margin-right: 5px;
+}
+
+footer {
+    background-color: #015f727c;
+    padding: 20px 0;
+    color: white;
+    text-align: center;
+}
+footer a {
+    color: white;
+    text-decoration: none;
+}
+footer a:hover {
+    color: #94d2bd;
 }

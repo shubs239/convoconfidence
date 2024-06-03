@@ -1,4 +1,4 @@
-
+//document.addEventListener("DOMContentLoaded", function() {
 
 const scenarios = [
     {
@@ -84,6 +84,7 @@ let chatHistories = {};
 let loggedIn=false;
 
 
+
 function openScenarioModal(scenarioId) {
     if (activeScenario !== scenarioId) {
         // New scenario selected, reset timer and load new content
@@ -112,6 +113,7 @@ function openScenarioModal(scenarioId) {
     // Show the modal
     //new bootstrap.Modal(document.getElementById('staticBackdrop')).show();
 }
+console.log(loggedIn,"login h kya?")
 
 // function loadScenarioContent(scenarioId) {
 //     // Find the scenario data (you need to implement getScenarioData)
@@ -127,6 +129,8 @@ document.querySelectorAll('.start-chatting').forEach(button => {
       const scenario = this.getAttribute('data-scenario');
       //timerPaused = false;
       console.log(timerPaused,"start chatting wala")
+      //console.log(isAuthenticated);
+      console.log(remainingTime);
       if (timerPaused) {
         timerPaused = true
       } 
@@ -176,7 +180,7 @@ document.getElementById('send-message').addEventListener('click', function() {
     const chatInput = document.getElementById('chat-input');
     const message = chatInput.value.trim();
     //remainingTime=30
-    console.log(remainingTime)
+    //console.log(remainingTime)
     
     if (message !== "") {
         // Add user message
@@ -232,11 +236,12 @@ function startTimer(time) {
         if (--time < 0) {
             clearInterval(countdown);
             if (!loggedIn) {
-                document.getElementById('signup-form').style.display = 'block';
+            document.getElementById('signup-form').style.display = 'block';
     // Optionally disable the message input and send button
             document.getElementById('chat-input').disabled = true;
             document.getElementById('send-message').disabled = true;
             }
+            
             
             
             // Handle what happens when the timer reaches 0
@@ -426,11 +431,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     loginButton.addEventListener("click", (e) => {
         e.preventDefault();
         auth0Client.loginWithRedirect();
+        loggedIn = true;
+        console.log(loggedIn,"kjhhfcggh")
+        //document.getElementById('signup-form').style.display = none;
+        
     });
    
     loginButtonNavbar.addEventListener("click", (e) => {
         e.preventDefault();
         auth0Client.loginWithRedirect();
+        loggedIn=true;
+        console.log(loggedIn,"navbar walaa")
+        document.getElementById('signup-form').style.display = none;
+        remainingTime=600;
+        startTimer(remainingTime);
+        
     });
     // if (window.location.search.includes("state=") &&
     //     (window.location.search.includes("code=") ||
@@ -449,7 +464,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     //const userProfile = await auth0Client.getUser();
 
     const profileElement = document.getElementById("profile");
-    console.log(isAuthenticated)
+    //console.log(isAuthenticated)
     if (isAuthenticated) {
         const userProfile = await auth0Client.getUser();
         profileElement.style.display = "block";
@@ -461,9 +476,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         
         // Update the navbar with the user's name
         signupNavbar = document.getElementById("signup-navbar")
-        console.log(signupNavbar)
+        //console.log(signupNavbar)
+        loggedIn=true;
         signupNavbar.textContent = userProfile.name;
     } else {
+        signupNavbar = document.getElementById("signup-navbar")
         profileElement.style.display = "none";
         logoutButton.style.display = "none";
         
@@ -471,3 +488,4 @@ document.addEventListener("DOMContentLoaded", async () => {
         signupNavbar.textContent = "Sign Up/Login";
     }
 });
+//});
