@@ -241,6 +241,9 @@ function startTimer(time) {
             document.getElementById('chat-input').disabled = true;
             document.getElementById('send-message').disabled = true;
             }
+        else if(loggedIn){
+            startTimer(300);
+        }
             
             
             
