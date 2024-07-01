@@ -13,8 +13,9 @@ def convoConfidenceMessage(req: func.HttpRequest) -> func.HttpResponse:
         req_body = req.get_json()
         user_input = req_body.get('user_input')
         chat_history = req_body.get('chat_history')
-        #scenario = req_body.get("scenario")
-        print(user_input)
+        scenario = req_body.get("scenario")
+        #if scenario wala logic for different system prompt
+        #print(user_input)
     except ValueError as e:
         logging.error(f'Error parsing request body: {e}')
         return func.HttpResponse(

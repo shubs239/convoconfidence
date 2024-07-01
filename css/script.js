@@ -82,6 +82,7 @@ let activeScenario = null;
 let timer = null;
 let chatHistories = {};
 let loggedIn=false;
+let onceDone = false;
 
 
 
@@ -139,12 +140,21 @@ document.querySelectorAll('.start-chatting').forEach(button => {
       
     });
   });
+  function setModalBackground(scenarioId) {
+    const modal = document.querySelector('.modal-content');
+    modal.style.backgroundImage = `url('./css/img/${scenarioId}-background.jpg')`;
 
+    modal.style.backgroundSize = 'cover';
+    modal.style.backgroundPosition = 'center';
+  }
   function updateModalContent(scenario) {
     // Based on the scenario, update the modal's content
     //const modalBody = document.querySelector('#staticBackdrop .modal-body');
     
     const scenarioId = scenarios.find(selectedScenario => selectedScenario.id === scenario);
+    setModalBackground(scenarioId.id);
+    //console.log(scenarioId)
+    console.log(`${scenarioId.id}-background.jpg`)
     document.getElementById('suggested-messages').style.display = 'block';
     document.querySelector('.scenario-name').innerHTML = scenarioId.name;
     //console.log(document.querySelector("p.scenario-details").innerHTML)
@@ -152,7 +162,7 @@ document.querySelectorAll('.start-chatting').forEach(button => {
     populateSuggestions(scenario)
     //console.log(scenario)
     
-    document.getElementById('chat-area').innerHTML = ''; 
+    document.getElementById('chat-area').style.display='none'; 
     //modalBody.innerHTML = '<p>Chat content for ' + scenario + ' will go here...</p>';
     // Update other parts of the modal as needed
   }
@@ -169,6 +179,7 @@ document.getElementById('send-message').addEventListener('click', function() {
     // }else{
     //     document.getElementById('send-message').disabled = false;
     //const scenario = this.getAttribute('data-scenario');
+    console.log(activeScenario,"sctive konsa h")
     // }
     if(loggedIn && timerStarted){
         document.getElementById('chat-input').disabled = false;
@@ -207,7 +218,7 @@ document.getElementById('send-message').addEventListener('click', function() {
             const chatHistory = getChatHistory();
             chatHistory.push({ role: 'user', content: message });
             //addAiMessage("This is a response from AI.");
-            callBackendApi(message, chatHistory).then(aiMessage => {
+            callBackendApi(message, chatHistory, activeScenario).then(aiMessage => {
                 addAiMessage(aiMessage);
                 //console.log(scenario)
             });
@@ -261,6 +272,7 @@ function resetTimer() {
 }
 function addUserMessage(message) {
     const chatArea = document.getElementById('chat-area');
+    chatArea.style.display='block';
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('message', 'user-message');
     const img = document.createElement('img');
@@ -365,7 +377,7 @@ function useSuggestedMessage(message) {
 //      //console.log(new bootstrap.Modal(signupLoginModal))
 //     //startTimer(remainingTime+30); // Restart the timer for another 5 minutes
 // });
-async function callBackendApi(userInput, chatHistory) {
+async function callBackendApi(userInput, chatHistory,scenario) {
     try {
         const response = await fetch('http://localhost:7071/api/convoConfidenceMessage', {
             method: 'POST',
@@ -376,7 +388,7 @@ async function callBackendApi(userInput, chatHistory) {
             body: JSON.stringify({
                 user_input: userInput,
                 chat_history: chatHistory,
-                //scenario: scenario
+                scenario: scenario
             })
         });
 
