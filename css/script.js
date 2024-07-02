@@ -89,16 +89,17 @@ let onceDone = false;
 function openScenarioModal(scenarioId) {
     if (activeScenario !== scenarioId) {
         // New scenario selected, reset timer and load new content
+        //chatHistories={}
         if (! loggedIn) {
             document.getElementById('signup-form').style.display = 'none';
         
     // Optionally disable the message input and send button
-    document.getElementById('chat-input').disabled = false;
-    document.getElementById('send-message').disabled = false;
+            document.getElementById('chat-input').disabled = false;
+            document.getElementById('send-message').disabled = false;
         }
         else if(loggedIn){
             document.getElementById('chat-input').disabled = false;
-    document.getElementById('send-message').disabled = false;
+            document.getElementById('send-message').disabled = false;
         }
         
         resetTimer();
@@ -114,7 +115,7 @@ function openScenarioModal(scenarioId) {
     // Show the modal
     //new bootstrap.Modal(document.getElementById('staticBackdrop')).show();
 }
-console.log(loggedIn,"login h kya?")
+//console.log(getChatHistory(),"login h kya?")
 
 // function loadScenarioContent(scenarioId) {
 //     // Find the scenario data (you need to implement getScenarioData)
@@ -154,7 +155,7 @@ document.querySelectorAll('.start-chatting').forEach(button => {
     const scenarioId = scenarios.find(selectedScenario => selectedScenario.id === scenario);
     setModalBackground(scenarioId.id);
     //console.log(scenarioId)
-    console.log(`${scenarioId.id}-background.jpg`)
+    //console.log(`${scenarioId.id}-background.jpg`)
     document.getElementById('suggested-messages').style.display = 'block';
     document.querySelector('.scenario-name').innerHTML = scenarioId.name;
     //console.log(document.querySelector("p.scenario-details").innerHTML)
@@ -179,8 +180,9 @@ document.getElementById('send-message').addEventListener('click', function() {
     // }else{
     //     document.getElementById('send-message').disabled = false;
     //const scenario = this.getAttribute('data-scenario');
-    console.log(activeScenario,"sctive konsa h")
+    //console.log(getChatHistory(),"chathistory h")
     // }
+    
     if(loggedIn && timerStarted){
         document.getElementById('chat-input').disabled = false;
     document.getElementById('send-message').disabled = false;
@@ -272,9 +274,7 @@ function resetTimer() {
 }
 function addUserMessage(message) {
     const chatArea = document.getElementById('chat-area');
-    if (chatArea.innerHTML!==""){
-        chatArea.style.display='block';
-    }
+    chatArea.style.display='block';
     
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('message', 'user-message');
@@ -322,6 +322,9 @@ document.getElementById('ok-button').addEventListener('click', function() {
 
     // Optionally reset the timer display or handle other logic
     //document.getElementById('timer').textContent = "05:00";
+    const chatArea = document.getElementById('chat-area');
+    chatArea.innerHTML = '';
+    chatArea.style.display='block';
     pauseTimer()
     timerPaused = true;
     console.log(timerPaused,"close wala")
@@ -343,16 +346,23 @@ function populateSuggestions(id) {
         li.textContent = suggestion;
         li.addEventListener('click', () => useSuggestedMessage(suggestion));
         suggestionList.appendChild(li);
+        // const chatArea = document.getElementById('chat-area');
+        // chatArea.style.display='block';
+        // console.log("open chatArea")
     });
     //console.log(scenarioId.description)
 }
 
 function useSuggestedMessage(message) {
+    const chatArea = document.getElementById('chat-area');
+        chatArea.style.display='block';
+        console.log("open chatArea")
     const chatInput = document.getElementById('chat-input');
     chatInput.value = message;
     // Simulate a message send click
     document.getElementById('send-message').click();
     startTimer(remainingTime)
+    
     // Hide the suggested messages
    
     
