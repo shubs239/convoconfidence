@@ -272,7 +272,10 @@ function resetTimer() {
 }
 function addUserMessage(message) {
     const chatArea = document.getElementById('chat-area');
-    chatArea.style.display='block';
+    if (chatArea.innerHTML!==""){
+        chatArea.style.display='block';
+    }
+    
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('message', 'user-message');
     const img = document.createElement('img');
