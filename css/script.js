@@ -77,14 +77,14 @@ const scenarios = [
 let timerStarted = false;
 let countdown;
 let timerPaused= false;
-let remainingTime = 2;
+let remainingTime = 5;
 let activeScenario = null;
 let timer = null;
 let chatHistories = {};
 let loggedIn=false;
 let onceDone = false;
 
-
+//
 
 function openScenarioModal(scenarioId) {
     if (activeScenario !== scenarioId) {
@@ -137,6 +137,7 @@ document.querySelectorAll('.start-chatting').forEach(button => {
         timerPaused = true
       } 
       openScenarioModal(scenario);
+      document.getElementById("feedback-button").style.display='none';
       //updateModalContent(scenario);
       
     });
@@ -255,7 +256,11 @@ function startTimer(time) {
             document.getElementById('send-message').disabled = true;
             }
         else if(loggedIn){
-            startTimer(300);
+            console.log("timer off h")
+            //startTimer(300);
+            document.getElementById('chat-input').disabled = true;
+            document.getElementById('send-message').disabled = true;
+            document.getElementById("feedback-button").style.display='block';
         }
             
             
@@ -267,10 +272,18 @@ function startTimer(time) {
 
 function resetTimer() {
     clearInterval(timer);
-    remainingTime = 2; // Reset to 5 minutes
+    if(loggedIn){
+        remainingTime = 6;
+        document.getElementById('timer').textContent = "10:00";
+    }
+    else if(!loggedIn){
+        remainingTime = 3;
+        document.getElementById('timer').textContent = "05:00";
+    }
+     // Reset to 5 minutes
     timerPaused = false;
     // Reset timer display to 05:00
-    document.getElementById('timer').textContent = "05:00";
+    
 }
 function addUserMessage(message) {
     const chatArea = document.getElementById('chat-area');
@@ -516,4 +529,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         signupNavbar.textContent = "Sign Up/Login";
     }
 });
+document.getElementById("call-feedback-button").addEventListener('click',function(){
+    console.log(getChatHistory())
+})
 //});

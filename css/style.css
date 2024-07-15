@@ -15,6 +15,14 @@
   
   border-radius: 0 0 10px 10px;
 }
+.feedback-button {
+    text-align: center;
+    margin-top: 10px;
+    font-family: 'Roboto', sans-serif;
+    background-color: rgba(255, 255, 255, 0.8);;
+    border-radius: 10px 10px 10px 10px;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
