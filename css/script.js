@@ -273,11 +273,11 @@ function startTimer(time) {
 function resetTimer() {
     clearInterval(timer);
     if(loggedIn){
-        remainingTime = 6;
+        remainingTime = 60;
         document.getElementById('timer').textContent = "10:00";
     }
     else if(!loggedIn){
-        remainingTime = 3;
+        remainingTime = 30;
         document.getElementById('timer').textContent = "05:00";
     }
      // Reset to 5 minutes
@@ -429,6 +429,34 @@ async function callBackendApi(userInput, chatHistory,scenario) {
         return "Sorry, something went wrong. Please try again.";
     }
 }
+async function callGetFeedback(chat_history){
+    chat_history=getChatHistory();
+    try {
+        const response = await fetch('http://localhost:7071/api/getFeedback', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Credentials': 'true'
+            },
+            body: JSON.stringify({
+                
+                chat_history: chat_history
+                
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data['feedback'];
+    } catch (error) {
+        console.error('Error:', error);
+        return "Sorry, something went wrong. Please try again.";
+    }
+}
+
 
 function getChatHistory() {
     const chatArea = document.getElementById('chat-area');
@@ -529,7 +557,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         signupNavbar.textContent = "Sign Up/Login";
     }
 });
-document.getElementById("call-feedback-button").addEventListener('click',function(){
-    console.log(getChatHistory())
-})
+document.getElementById("call-feedback-button").addEventListener('click',async function(){
+
+    try {
+        const chatHistory = getChatHistory();
+        const feedbackResponse = await callGetFeedback(chatHistory);
+        
+        // Assuming the feedback is in the 'feedback' property of the response
+        document.getElementById("feedback-info").innerHTML = feedbackResponse;
+        
+        console.log("Feedback received:", feedbackResponse.feedback);
+    } catch (error) {
+        console.error("Error getting feedback:", error);
+        document.getElementById("feedback-info").innerHTML = "Error retrieving feedback. Please try again.";
+    }
+});
 //});

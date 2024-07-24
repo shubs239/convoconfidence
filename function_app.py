@@ -109,3 +109,65 @@ def get_system_prompt(scenario_id):
         if scenario["id"] == scenario_id:
             return scenario["systemPrompt"]
     return None 
+
+@app.route(route="getFeedback", auth_level=func.AuthLevel.FUNCTION)
+def getFeedback(req: func.HttpRequest) -> func.HttpResponse:
+    logging.info('Python HTTP trigger function processed a request.')
+
+    #name = req.params.get('name')
+    try:
+        req_body = req.get_json()
+        chat_history = req_body.get('chat_history')
+        # scenario = req_body.get("scenario")
+    except ValueError as e:
+        logging.error(f'Error parsing request body: {e}')
+        return func.HttpResponse(
+            "Invalid request body",
+            status_code=400
+        )
+
+    if chat_history is not None:
+        deepinfra_api_key = "ETeOZ2RdgtRvZxdzRL1CTdqkzJL8IYj4"
+        openai = OpenAI(
+            api_key=deepinfra_api_key,
+            base_url="https://api.deepinfra.com/v1/openai",
+        )
+        
+        system_prompt = """You are a dating guru providing feedback on a chat conversation. 
+        Analyze the conversation and provide insights on what the person did well and what they could improve. 
+        Focus on conversation skills, engagement, and overall interaction quality. 
+        Be constructive and supportive in your feedback."""
+
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": f"Here's the chat history to analyze: {json.dumps(chat_history)}"}
+        ]
+        
+        try:
+            chat_completion = openai.chat.completions.create(
+                model="meta-llama/Llama-2-70b-chat-hf",
+                messages=messages,
+                max_tokens=500
+            )
+            feedback = chat_completion.choices[0].message.content
+            print(feedback)
+            response_data = {
+                "feedback": feedback,
+                "usage": {
+                    "prompt_tokens": chat_completion.usage.prompt_tokens,
+                    "completion_tokens": chat_completion.usage.completion_tokens
+                }
+            }
+            return func.HttpResponse(json.dumps(response_data), status_code=200, mimetype="application/json")
+        except Exception as e:
+            logging.error(f"Deepinfra API request failed: {e}")
+            return func.HttpResponse(
+                f"Deepinfra API request failed: {e}",
+                status_code=500
+            )
+    else:
+        logging.error('Missing chat_history in the request body')
+        return func.HttpResponse(
+            "Please provide chat_history in the request body.",
+            status_code=400
+        )
