@@ -136,7 +136,8 @@ def getFeedback(req: func.HttpRequest) -> func.HttpResponse:
         system_prompt = """You are a dating guru providing feedback on a chat conversation. 
         Analyze the conversation and provide insights on what the person did well and what they could improve. 
         Focus on conversation skills, engagement, and overall interaction quality. 
-        Be constructive and supportive in your feedback."""
+        Be constructive and supportive in your feedback.
+        reply in HTML format to be put under <p> tag"""
 
         messages = [
             {"role": "system", "content": system_prompt},
