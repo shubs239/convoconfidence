@@ -1,19 +1,52 @@
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --background-color: #f8f9fa;
+    --text-color: #333333;
+}
+.dark-mode {
+    --background-color: #1a1a1a;
+    --text-color: #ffffff;
+}
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Inter', sans-serif;
+    
+}
 .chat-area {
-    height: auto; /* Adjust height as needed */
-    overflow-y: auto; /* Enable scrolling for overflow */
-    border: 1px solid #ccc;
-    margin-bottom: 10px;
-    padding: 10px;
-    /* background-color: #f5f5f5; Light grey background */
-    background-color: rgba(255, 255, 255, 0.8);
-}   
+    height: calc(100vh - 200px);
+    overflow-y: auto;
+    padding: 1rem;
+    background-color: #f0f2f5;
 
+}   
+.btn-primary {
+    background-color: var(--primary-color);
+}
+.btn {
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+}
+.btn:hover {
+    opacity: 0.9;
+}
 .chat-input-area {
     display: flex;
     margin-top: 10px;
     background-color: rgba(255, 255, 255, 0.8);
+    position: sticky;
+    bottom: 0;
+    
+    padding: 1rem;
+    border-top: 1px solid #e0e0e0;
   
-  border-radius: 0 0 10px 10px;
 }
 .feedback-button {
     text-align: center;
@@ -38,13 +71,16 @@
     animation: fadeIn 0.3s ease-out;
   }
   
-  .message {
-    animation: fadeIn 0.2s ease-out;
-  }
+ 
 .message {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+   
+    animation: fadeIn 0.3s ease-out;
+    max-width: 80%;
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 18px;
 }
 .message-img {
     width: 40px; /* Adjust size as needed */
@@ -66,6 +102,8 @@
 
 .ai-message {
     display: flex;
+    background-color: white;
+    align-self: flex-start;
     justify-content: flex-start; /* Aligns AI message to the left */
 }
 .timer {
@@ -89,6 +127,9 @@
     margin-left: auto;
     display: flex;
     justify-content: flex-end;
+    background-color: var(--primary-color);
+    color: white;
+    align-self: flex-end;
 }
 
 .user-message .message-text {
@@ -123,14 +164,16 @@
 .img-paid{
     opacity: 0.6;
 }
-body {
-    background-color: #000000;
-    font-family: 'Roboto', sans-serif;
-    color: #333333;
+
+h1, h2, h3 {
+    font-weight: 700;
 }
 .navbar {
-    background-color: #005f73;
-    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.8);
 }
 .navbar .navbar-brand {
     color: rgb(0, 0, 0);
@@ -148,13 +191,27 @@ body {
 .card {
     background-color: white;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin: 20px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     padding: 20px;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 .card img {
     border-radius: 10px 10px 0 0;
 }
+.card-title {
+    font-size: 1.25rem;
+}
+
+.card-text {
+    font-size: 0.9rem;
+}
+
+
 .card .btn-success {
     background-color: #008080;
     border: none;
@@ -195,4 +252,17 @@ footer a {
 }
 footer a:hover {
     color: #94d2bd;
+}
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 1rem;
+    }
+
+    .chat-area {
+        height: calc(100vh - 150px);
+    }
+
+    .message {
+        max-width: 90%;
+    }
 }
