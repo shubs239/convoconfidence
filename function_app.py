@@ -66,7 +66,7 @@ def convoConfidenceMessage(req: func.HttpRequest) -> func.HttpResponse:
         )
 
     if user_input and chat_history is not None:
-        deepinfra_api_key = "ETeOZ2RdgtRvZxdzRL1CTdqkzJL8IYj4"
+        deepinfra_api_key = ""
         openai = OpenAI(
             api_key=deepinfra_api_key,
             base_url="https://api.deepinfra.com/v1/openai",
@@ -127,7 +127,7 @@ def getFeedback(req: func.HttpRequest) -> func.HttpResponse:
         )
 
     if chat_history is not None:
-        deepinfra_api_key = "ETeOZ2RdgtRvZxdzRL1CTdqkzJL8IYj4"
+        deepinfra_api_key = ""
         openai = OpenAI(
             api_key=deepinfra_api_key,
             base_url="https://api.deepinfra.com/v1/openai",
